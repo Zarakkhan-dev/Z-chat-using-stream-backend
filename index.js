@@ -1,9 +1,9 @@
 import express from "express"
 import "dotenv/config"
-import AuthRoute from "./routes/auth.route.js"
-import UserRoute from "./routes/user.route.js"
-import ChatRoute from "./routes/chat.route.js"
-import { databaseConnection } from "./lib/db.js";
+import AuthRoute from "./src/routes/auth.route.js"
+import UserRoute from "./src/routes/user.route.js"
+import ChatRoute from "./src/routes/chat.route.js"
+import { databaseConnection } from "./src/lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import path from "path";
