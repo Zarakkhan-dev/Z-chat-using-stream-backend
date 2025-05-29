@@ -4,32 +4,28 @@ import { upsertStreamUser } from "../lib/stream.js";
 
 export const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    console.log("Login attempt:", email, password);
+    const {email, password} = req.body;
 
-    if (!email || !password) {
+    if(!email || !password) {
       return res.status(400).json({ message: "All fields are Required" });
     }
 
-    const verifyUser = await User.findOne({ email });
-    console.log("User found:", verifyUser);
+    const verifyUser = await User.findOne({email});
+    if(!verifyUser) return res.status(401).json({message: "Invalid email or password"});
 
-    if (!verifyUser) return res.status(401).json({ message: "Invalid email or password" });
-
-    const isPassword = await verifyUser.matchPassword(password); // fix typo if needed
-    if (!isPassword) return res.status(401).json({ message: "Invalid email or password" });
+    const isPassowrd = await verifyUser.matchPassword(password)
+    if(!isPassowrd) return res.status(401).json({message: "Invalid email or password"});
     
     const token = jwt.sign({userId: verifyUser._id}, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d"
     });
 
-    res.cookie("jwt", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    });
-    res.header("Access-Control-Expose-Headers", "Set-Cookie");
+    // res.cookie("jwt", token, {
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    //   httpOnly: true, // prevent XSS attacks,
+    //   sameSite: "none", // prevent CSRF attacks
+    //   secure: process.env.NODE_ENV === "production",
+    // });
 
     res.status(201).json({success: true, user: verifyUser});
   } catch (error) {
@@ -91,11 +87,10 @@ export const Signup = async (req, res) => {
 
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "none",
+      httpOnly: true, // prevent XSS attacks,
+      sameSite: "none", // prevent CSRF attacks
       secure: true,
     });
-    res.header("Access-Control-Expose-Headers", "Set-Cookie");
     
     res.status(201).json({success: true, user: newUser});
   } catch (error) {
