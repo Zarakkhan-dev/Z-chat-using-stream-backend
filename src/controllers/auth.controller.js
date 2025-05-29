@@ -22,10 +22,11 @@ export const Login = async (req, res) => {
 
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true, // prevent XSS attacks,
-      sameSite: "none", // prevent CSRF attacks
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
     });
+    res.header("Access-Control-Expose-Headers", "Set-Cookie");
 
     res.status(201).json({success: true, user: verifyUser});
   } catch (error) {
@@ -87,10 +88,11 @@ export const Signup = async (req, res) => {
 
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true, // prevent XSS attacks,
-      sameSite: "none", // prevent CSRF attacks
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
     });
+    res.header("Access-Control-Expose-Headers", "Set-Cookie");
     
     res.status(201).json({success: true, user: newUser});
   } catch (error) {
