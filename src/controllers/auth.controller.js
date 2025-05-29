@@ -4,17 +4,20 @@ import { upsertStreamUser } from "../lib/stream.js";
 
 export const Login = async (req, res) => {
   try {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
+    console.log("Login attempt:", email, password);
 
-    if(!email || !password) {
+    if (!email || !password) {
       return res.status(400).json({ message: "All fields are Required" });
     }
 
-    const verifyUser = await User.findOne({email});
-    if(!verifyUser) return res.status(401).json({message: "Invalid email or password"});
+    const verifyUser = await User.findOne({ email });
+    console.log("User found:", verifyUser);
 
-    const isPassowrd = await verifyUser.matchPassword(password)
-    if(!isPassowrd) return res.status(401).json({message: "Invalid email or password"});
+    if (!verifyUser) return res.status(401).json({ message: "Invalid email or password" });
+
+    const isPassword = await verifyUser.matchPassword(password); // fix typo if needed
+    if (!isPassword) return res.status(401).json({ message: "Invalid email or password" });
     
     const token = jwt.sign({userId: verifyUser._id}, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d"
