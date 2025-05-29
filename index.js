@@ -16,13 +16,19 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  origin: "*", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
-  
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://z-chat-using-stream-frontend-zeta.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/user", UserRoute);
