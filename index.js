@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: "*",
+    origin: "https://z-chat-using-stream-frontend.vercel.app",
     credentials: true
   }));
 
