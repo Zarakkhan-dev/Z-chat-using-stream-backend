@@ -22,19 +22,43 @@ const allowedOrigins = [
   "https://z-chat-using-stream-frontend-zeta.vercel.app"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+//       return callback(new Error("Not allowed by CORS"));
+//     },
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//   })
+// );
+
+// const ALLOWED_ORIGIN =
+//   process.env.NODE_ENV === 'production'
+//     ? 'https://app.example'
+//     : '*';
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': allowedOrigins,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true',
     },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+  });
+}
+
+export async function GET() {
+  return Response.json({ ok: true }, {
+    headers: { 'Access-Control-Allow-Origin': ALLOWED_ORIGIN },
+  });
+}
+
 
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/user", UserRoute);
