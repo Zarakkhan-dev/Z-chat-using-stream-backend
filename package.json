@@ -2,14 +2,14 @@
   "name": "chatapi",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "Zarak Khan",
   "license": "ISC",
   "description": "",
-  "main": "index.js",
+  "main": "/src/index.js",
   "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.2",
