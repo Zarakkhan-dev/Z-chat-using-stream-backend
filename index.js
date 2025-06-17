@@ -23,9 +23,10 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: "*", // or a dynamic origin function
+  origin: allowedOrigins, // or a dynamic origin function
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 
 
